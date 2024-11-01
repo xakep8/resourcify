@@ -28,7 +28,7 @@ app.on('ready', () => {
     createTray(mainWindow);
 
     handleWindowClose(mainWindow);
-    // createMenu();
+    createMenu();
 });
 
 function handleWindowClose(mainWindow: BrowserWindow) {
