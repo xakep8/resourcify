@@ -25,12 +25,18 @@ jobs:
 
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npm run dist:linux
 
       - name: Build for macOS
         if: matrix.os == 'macos-latest'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npm run dist:mac
 
       - name: Build for Windows
         if: matrix.os == 'windows-latest'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npm run dist:win
