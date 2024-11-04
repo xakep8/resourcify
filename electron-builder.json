@@ -1,5 +1,4 @@
 {
-    "publish":"always",
     "appId": "com.0biwan.resourcify",
     "files": [
         "dist-electron",
