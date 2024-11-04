@@ -2,6 +2,10 @@
   "name": "resourcify",
   "private": true,
   "version": "1.0.0",
+  "author":{
+    "name": "xakep8",
+    "email": "xakep.ate@gmail.com"
+  },
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
