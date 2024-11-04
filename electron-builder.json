@@ -4,6 +4,13 @@
         "dist-electron",
         "dist-react"
     ],
+    "publish": [
+        {
+            "provider": "github",
+            "owner": "xakep8",
+            "repo": "resourcify"
+        }
+    ],
     "icon": "./favicon.png",
     "extraResources": [
         "dist-electron/preload.cjs",
