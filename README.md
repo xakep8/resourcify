@@ -4,12 +4,11 @@ It is a resource monitor and process manager built in ElectronJS. This project i
 
 ## Installing the application.
 
-You can install the application by cloning the repo using
-`git clone https://github.com/xakep8/resourcify.git`
-the you can run the command
-- `npm run dist:mac` for MacOS
-- `npm run dist:linux` for linux
-- `npm run dist:win` for windows
+You can install the application by downloading the binaries:
+- [MacOS](https://github.com/xakep8/resourcify/releases/download/v1.0.0/resourcify-1.0.0-arm64.dmg)
+- [Linux (.deb)](https://github.com/xakep8/resourcify/releases/download/v1.0.0/resourcify_1.0.0_amd64.deb)
+- [Windows (.exe)](https://github.com/xakep8/resourcify/releases/download/v1.0.0/resourcify-1.0.0.exe)
+- [Windows (.msi)](https://github.com/xakep8/resourcify/releases/download/v1.0.0/resourcify-1.0.0.msi)
 
 hope you enjoy using the application
 
