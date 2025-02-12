@@ -1,0 +1,7 @@
+#!bin/bash
+set -e
+
+chmod 4775 /opt/Resourcify/chrome-sandbox
+chown root:root /opt/Resourcify/chrome-sandbox
+
+exit 0

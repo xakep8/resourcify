@@ -10,9 +10,6 @@ export function App() {
   const ramUsage = useMemo(() => statistics.map(stat => stat.ramUsage), [statistics]);
   const diskUsage = useMemo(() => statistics.map(stat => stat.diskUsage), [statistics]);
 
-  console.log(statistics);
-
-
   return (
     <div className="flex w-full h-screen overflow-y-hidden">
       <div className="flex flex-row w-full h-full justify-between">

@@ -1,9 +1,14 @@
 {
     "appId": "com.0biwan.resourcify",
+    "productName": "Resourcify",
     "files": [
         "dist-electron",
         "dist-react"
     ],
+    "directories":{
+        "output":"dist",
+        "buildResources":"buildResources"
+    },
     "publish": [
         {
             "provider": "github",
@@ -11,22 +16,34 @@
             "repo": "resourcify"
         }
     ],
-    "icon": "./favicon.png",
     "extraResources": [
         "dist-electron/preload.cjs",
         "src/assets/**"
     ],
     "mac": {
-        "target": "dmg"
+        "target": [
+            {
+                "target": "dmg",
+                "arch":["universal"]
+            }
+        ],
+        "icon": "./favicon.png"
     },
     "linux": {
         "target": "deb",
-        "category": "Utility"
+        "desktop": {
+            "Terminal": "false",
+            "Type": "Application",
+            "Categories": "Utility"
+        },
+        "icon": "./favicon.png",
+        "afterInstall": "buildResources/after-install.sh"
     },
     "win": {
         "target": [
             "portable",
             "msi"
-        ]
+        ],
+        "icon": "./favicon.png"
     }
 }

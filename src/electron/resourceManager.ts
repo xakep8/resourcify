@@ -1,4 +1,4 @@
-import osUtils, { cpuUsage } from 'os-utils';
+import osUtils from 'os-utils';
 import fs from "fs";
 import os from 'os';
 import { BrowserWindow } from 'electron';
@@ -19,6 +19,7 @@ export function getStaticData() {
     const totalStorage = getDiskUsage().total;
     const cpuModel = os.cpus()[0].model;
     const totalMemGB = Math.floor(osUtils.totalmem() / 1024);
+    console.log(os.cpus());
     return ({ totalStorage, cpuModel, totalMemGB });
 }
 

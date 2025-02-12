@@ -11,6 +11,7 @@ app.on('ready', () => {
         webPreferences: {
             preload: getPreloadPath(),
             sandbox: false,
+            nodeIntegration: true,
         },
     });
     if (isDev()) {
@@ -25,6 +26,8 @@ app.on('ready', () => {
         return getStaticData();
     })
 
+    // mainWindow.webContents.openDevTools();
+
     createTray(mainWindow);
 
     handleWindowClose(mainWindow);
@@ -35,12 +38,12 @@ function handleWindowClose(mainWindow: BrowserWindow) {
     let willClose = false;
 
     mainWindow.on('close', (e) => {
-        if(willClose){
+        if (willClose) {
             return;
         }
         e.preventDefault();
         mainWindow.hide();
-        if(app.dock){
+        if (app.dock) {
             app.dock.hide();
         }
     });
