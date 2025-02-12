@@ -36,7 +36,9 @@
             "Type": "Application",
             "Categories": "Utility"
         },
-        "icon": "./favicon.png",
+        "icon": "./favicon.png"
+    },
+    "deb":{
         "afterInstall": "buildResources/after-install.sh"
     },
     "win": {
