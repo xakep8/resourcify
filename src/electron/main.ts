@@ -25,7 +25,6 @@ app.on('ready', () => {
     ipcHandle("getStaticData", () => {
         return getStaticData();
     })
-
     // mainWindow.webContents.openDevTools();
 
     createTray(mainWindow);
