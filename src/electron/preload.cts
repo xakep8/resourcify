@@ -6,6 +6,10 @@ electron.contextBridge.exposeInMainWorld('electron', {
             callback(stats);
         }),
     getStaticData: () => ipcInvoke('getStaticData'),
+    subscribeProcessesInfo: (callback) =>
+        ipcOn("processesInfo", (processes) => {
+            callback(processes);
+        }),
 } satisfies Window["electron"]);
 
 function ipcInvoke<Key extends keyof EventPayloadMapping>(key: Key): Promise<EventPayloadMapping[Key]> {

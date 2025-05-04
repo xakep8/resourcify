@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Tray } from 'electron';
 import { ipcHandle, isDev } from './util.js';
-import { getStaticData, pollResources } from './resourceManager.js';
+import { getStaticData, pollResources, pollProcessesInfo } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import { getUIPath } from './pathResolver.js';
 import { createTray } from './tray.js';
@@ -12,7 +12,13 @@ app.on('ready', () => {
             preload: getPreloadPath(),
             sandbox: false,
             nodeIntegration: true,
+            contextIsolation: true,
         },
+        width:500,
+        height: 500,
+        transparent: true,
+        frame: false,
+        resizable: false,
     });
     if (isDev()) {
         mainWindow.loadURL("http://localhost:5123/");
@@ -21,11 +27,12 @@ app.on('ready', () => {
         mainWindow.loadFile(getUIPath());
     }
     pollResources(mainWindow);
+    pollProcessesInfo(mainWindow);
 
     ipcHandle("getStaticData", () => {
         return getStaticData();
     })
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     createTray(mainWindow);
 

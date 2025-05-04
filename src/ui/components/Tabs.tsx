@@ -1,0 +1,9 @@
+export default function Tabs(props: { setPanel: (panel: string) => void }) {
+    return (
+        <div className="flex flex-row text-center items-center w-full shadow-md shadow-blue-700 hover:shadow-lg hover:shadow-blue-800 rounded-md duration-300 transition-all">
+            <button className="flex w-full text-center justify-center" onClick={() => props.setPanel("CPU")}>CPU Usage</button>
+            <button className="flex w-full text-center justify-center" onClick={() => props.setPanel("RAM")}>RAM Usage</button>
+            <button className="flex w-full text-center justify-center" onClick={() => props.setPanel("Disk")}>Disk Usage</button>
+        </div>
+    );
+}

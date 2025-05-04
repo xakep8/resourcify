@@ -3,8 +3,9 @@ import fs from "fs";
 import os from 'os';
 import { BrowserWindow } from 'electron';
 import { ipcWebContentsSend } from './util.js';
+import si from 'systeminformation';
 
-const POLLING_INTERVAL = 500;
+const POLLING_INTERVAL = 2000;
 
 export function pollResources(mainWindow: BrowserWindow) {
     setInterval(async () => {
@@ -15,11 +16,43 @@ export function pollResources(mainWindow: BrowserWindow) {
     }, POLLING_INTERVAL);
 }
 
+// Add this function to poll processes info at regular intervals
+export function pollProcessesInfo(mainWindow: BrowserWindow, interval = 2000) {
+    setInterval(async () => {
+        const processes = await getProcessesInfo();
+        ipcWebContentsSend("processesInfo", mainWindow.webContents, processes);
+    }, interval);
+}
+
+export async function getProcessesInfo() {
+    try {
+        // Get detailed process information
+        const processes = await si.processes();
+        
+        // Get processes sorted by CPU usage
+        const processesWithResources = processes.list.map(process => ({
+            pid: process.pid,
+            name: process.name,
+            command: process.command,
+            cpuPercent: process.cpu,
+            memPercent: process.mem,
+            memRss: process.memRss,  // Resident Set Size (actual memory used)
+            priority: process.priority,
+            path: process.path,
+            user: process.user
+        })).sort((a, b) => b.cpuPercent - a.cpuPercent);
+        
+        return processesWithResources;
+    } catch (error) {
+        console.error('Error fetching process information:', error);
+        return [];
+    }
+}
+
 export function getStaticData() {
     const totalStorage = getDiskUsage().total;
     const cpuModel = os.cpus()[0].model;
     const totalMemGB = Math.floor(osUtils.totalmem() / 1024);
-    console.log(os.cpus());
     return ({ totalStorage, cpuModel, totalMemGB });
 }
 

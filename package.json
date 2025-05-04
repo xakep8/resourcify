@@ -9,6 +9,7 @@
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
+    "watch": "node scripts/watch.js",
     "dev": "npm-run-all --parallel dev:react dev:electron",
     "dev:react": "vite",
     "dev:electron": "npm run transpile:electron; cross-env NODE_ENV=development electron .",
@@ -20,12 +21,14 @@
     "dist:win": "npm run transpile:electron && npm run build && electron-builder --win --x64 --publish always"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@types/recharts": "^1.8.29",
     "eslint": "^9.13.0",
     "os-utils": "^0.0.14",
     "preact": "^10.24.1",
     "recharts": "^2.13.0",
-    "sudo-prompt": "^9.2.1"
+    "sudo-prompt": "^9.2.1",
+    "systeminformation": "^5.25.11"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.1",
