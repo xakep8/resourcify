@@ -16,8 +16,7 @@ export function pollResources(mainWindow: BrowserWindow) {
     }, POLLING_INTERVAL);
 }
 
-// Add this function to poll processes info at regular intervals
-export function pollProcessesInfo(mainWindow: BrowserWindow, interval = 2000) {
+export function pollProcessesInfo(mainWindow: BrowserWindow, interval = 5000) {
     setInterval(async () => {
         const processes = await getProcessesInfo();
         ipcWebContentsSend("processesInfo", mainWindow.webContents, processes);
@@ -28,21 +27,47 @@ export async function getProcessesInfo() {
     try {
         // Get detailed process information
         const processes = await si.processes();
-        
+
+        const processMap = new Map();
+        const rootProcesses: ProcessInfo[] = [];
+
         // Get processes sorted by CPU usage
-        const processesWithResources = processes.list.map(process => ({
-            pid: process.pid,
-            name: process.name,
-            command: process.command,
-            cpuPercent: process.cpu,
-            memPercent: process.mem,
-            memRss: process.memRss,  // Resident Set Size (actual memory used)
-            priority: process.priority,
-            path: process.path,
-            user: process.user
-        })).sort((a, b) => b.cpuPercent - a.cpuPercent);
-        
-        return processesWithResources;
+        processes.list.forEach((process) => {
+            const processObj = {
+                pid: process.pid,
+                name: process.name,
+                command: process.command,
+                cpuPercent: process.cpus,
+                memPercent: process.mem,
+                memRss: process.memRss,  // Resident Set Size (actual memory used)
+                priority: process.priority,
+                path: process.path,
+                user: process.user,
+                ppid: process.parentPid,
+                children: [],
+                depth: 0
+            }
+            processMap.set(process.pid, processObj);
+        });
+
+        processMap.forEach(process => {
+            if (process.ppid && processMap.has(process.ppid)) {
+                const parentProcess = processMap.get(process.ppid);
+                process.depth = parentProcess.depth + 1;
+                parentProcess.children.push(process);
+                if(parentProcess.children.length <= 1) {
+                    parentProcess.children.push(process);
+                }
+                else{
+                    rootProcesses.push(process);
+                }
+            }
+            else {
+                rootProcesses.push(process);
+            }
+        });
+        rootProcesses.sort((a, b) => b.cpuPercent - a.cpuPercent);
+        return rootProcesses;
     } catch (error) {
         console.error('Error fetching process information:', error);
         return [];

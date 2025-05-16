@@ -20,6 +20,9 @@ type ProcessInfo = {
     priority: number;
     path: string;
     user: string;
+    ppid?: number;
+    children: ProcessInfo[];
+    depth: number;
 }
 
 interface Window {

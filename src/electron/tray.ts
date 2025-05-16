@@ -6,7 +6,7 @@ import path from "path";
 
 export function createTray(mainWindow: BrowserWindow) {
     const tray = new Tray(path.join(getAssestPath(), process.platform == 'darwin' ? 'faviconTemplate.png' : 'favicon.png'));
-    tray.setContextMenu(Menu.buildFromTemplate([
+    const contextMenu=Menu.buildFromTemplate([
         {
             label: 'Show',
             click: ()=> {
@@ -19,5 +19,13 @@ export function createTray(mainWindow: BrowserWindow) {
             label: 'Quit',
             click: () => app.quit(),
         }
-    ]));
+    ]);
+    tray.setContextMenu(contextMenu);
+    tray.setToolTip('Resource Monitor');
+    // tray.on('click', () => {
+    //     mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+    //     if (app.dock) {
+    //         app.dock.hide();
+    //     }
+    // });
 }

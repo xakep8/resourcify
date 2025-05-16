@@ -31,11 +31,7 @@
     },
     "linux": {
         "target": "deb",
-        "desktop": {
-            "Terminal": "false",
-            "Type": "Application",
-            "Categories": "Utility"
-        },
+        "category": "Utility",
         "icon": "./favicon.png"
     },
     "deb":{

@@ -15,7 +15,7 @@ app.on('ready', () => {
             contextIsolation: true,
         },
         width:500,
-        height: 500,
+        height: 700,
         transparent: true,
         frame: false,
         resizable: false,

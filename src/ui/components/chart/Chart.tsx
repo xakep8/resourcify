@@ -1,95 +1,67 @@
 import { useMemo } from 'preact/hooks';
-import { BaseChart } from './BaseChart';
-import { PieChart, Pie, Tooltip } from 'recharts';
+import { RadialBarChart, RadialBar, PolarAngleAxis, PolarGrid } from 'recharts';
 
 export type ChartProps = {
     data: number[];
     maxDataPoints: number;
+    label?: string;
 }
 
 export function Chart(props: ChartProps) {
-    const preparedData = useMemo(() => {
-        const points = props.data.map((point) => ({ value: point * 100 }));
-        return [...points, ...Array.from({ length: props.maxDataPoints - points.length }).map(() => ({ value: undefined }))];
-    }, [props.data, props.maxDataPoints]);
+    const usageValue = useMemo(() => {
+        return Math.round((props.data[0] || 0) * 100);
+    }, [props.data]);
+
+    // Format data for RadialBarChart
+    const chartData = useMemo(() => {
+        return [
+            { name: 'Usage', value: usageValue }
+        ];
+    }, [usageValue]);
 
     return (
-        <>
-            <PieChart width={400} height={400}>
-                <Pie
+        <div className="flex justify-center items-center w-full">
+            <RadialBarChart
+                width={150}
+                height={150}
+                innerRadius={60}
+                outerRadius={70}
+                data={chartData}
+                startAngle={90}
+                endAngle={-270}
+            >
+                <PolarGrid radialLines={false} />
+                <PolarAngleAxis
+                    type="number"
+                    domain={[0, 100]}
+                    angleAxisId={0}
+                    tick={false}
+                />
+                <RadialBar
+                    background
+                    clockWise
                     dataKey="value"
-                    isAnimationActive={false}
-                    data={[
-                        { name: 'Used', value: preparedData[preparedData.length - 1]?.value ?? 0 },
-                        { name: 'Free', value: 100 - (preparedData[preparedData.length - 1]?.value ?? 0) }
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    fill="#8884d8"
-                    label
-
+                    cornerRadius={10}
+                    fill="#2563eb"
+                    backgroundFill="#4b5563"
                 />
-                <Tooltip formatter={(value) => `${value}%`} />
-            </PieChart>
-            <BaseChart data={preparedData} />
-            {/* <PieChart>
-                <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                />
-                <Pie
-                    data={desktopData}
-                    dataKey="desktop"
-                    nameKey="month"
-                    innerRadius={60}
-                    strokeWidth={5}
-                    activeIndex={activeIndex}
-                    activeShape={({
-                        outerRadius = 0,
-                        ...props
-                    }: PieSectorDataItem) => (
-                        <g>
-                            <Sector {...props} outerRadius={outerRadius + 10} />
-                            <Sector
-                                {...props}
-                                outerRadius={outerRadius + 25}
-                                innerRadius={outerRadius + 12}
-                            />
-                        </g>
-                    )}
+                <text
+                    x="50%"
+                    y="50%"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="fill-gray-300 text-xl font-bold"
                 >
-                    <Label
-                        content={({ viewBox }) => {
-                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                                return (
-                                    <text
-                                        x={viewBox.cx}
-                                        y={viewBox.cy}
-                                        textAnchor="middle"
-                                        dominantBaseline="middle"
-                                    >
-                                        <tspan
-                                            x={viewBox.cx}
-                                            y={viewBox.cy}
-                                            className="fill-foreground text-3xl font-bold"
-                                        >
-                                            {desktopData[activeIndex].desktop.toLocaleString()}
-                                        </tspan>
-                                        <tspan
-                                            x={viewBox.cx}
-                                            y={(viewBox.cy || 0) + 24}
-                                            className="fill-muted-foreground"
-                                        >
-                                            Visitors
-                                        </tspan>
-                                    </text>
-                                )
-                            }
-                        }}
-                    />
-                </Pie>
-            </PieChart> */}
-        </>
+                    <tspan x="50%" y="45%" className="text-2xl font-bold">
+                        {`${usageValue}%`}
+                    </tspan>
+                    {props.label && (
+                        <tspan x="50%" y="65%" className="text-sm text-gray-400">
+                            {props.label}
+                        </tspan>
+                    )}
+                </text>
+            </RadialBarChart>
+        </div>
     );
 }
