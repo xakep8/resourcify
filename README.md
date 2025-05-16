@@ -6,7 +6,7 @@ It is a resource monitor and process manager built in ElectronJS. This project i
 
 You can install the application by downloading the binaries from the release section.
 
-hope you enjoy using the application
+Hope you enjoy using the application
 
 ## Upcoming Features/Project To-Do list
 
